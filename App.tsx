@@ -8,6 +8,7 @@ import { Button } from './components/ui/Button';
 import { AdminView } from './components/admin/AdminView';
 import { ShieldCheck, Sparkles } from 'lucide-react';
 import { LogListModal } from './components/LogListModal';
+import { LandingPage } from './components/LandingPage';
 
 // Simple Hash Router Implementation for SPA
 const App: React.FC = () => {
@@ -37,80 +38,9 @@ const App: React.FC = () => {
     setView('APP');
   };
 
-  // 1. Auth View
+  // 1. Auth View (Landing Page)
   if (view === 'AUTH') {
-    return (
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6 relative overflow-hidden">
-        {isLoading && (
-          <div className="absolute inset-0 z-50 bg-white/80 backdrop-blur-sm flex items-center justify-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-          </div>
-        )}
-        {/* Decorative Background Blobs */}
-        <div className="absolute top-[-10%] right-[-20%] w-[300px] h-[300px] bg-orange-200 rounded-full blur-3xl opacity-30"></div>
-        <div className="absolute bottom-[-10%] left-[-20%] w-[300px] h-[300px] bg-pink-200 rounded-full blur-3xl opacity-30"></div>
-
-        <div className="relative z-10 flex flex-col items-center text-center space-y-6 max-w-sm w-full">
-          <div className="w-24 h-24 bg-primary rounded-3xl flex items-center justify-center shadow-xl shadow-orange-200 mb-4 rotate-3">
-            <span className="text-5xl">🐱</span>
-          </div>
-          <div>
-            <h1 className="text-3xl font-black text-gray-900 mb-2">NyangLife</h1>
-            <p className="text-gray-500 font-medium">고양이 생애 주기 관리 솔루션</p>
-            <div className="inline-block mt-2 bg-orange-100 text-orange-600 text-xs font-bold px-3 py-1 rounded-full">
-              BETA VER 1.0
-            </div>
-          </div>
-
-          <div className="w-full pt-8 space-y-3">
-            <Button
-              onClick={login}
-              isLoading={isLoading}
-              className="w-full h-14 text-lg bg-[#FEE500] hover:bg-[#FDD835] text-black border-none"
-            >
-              카카오로 3초만에 시작
-            </Button>
-
-            <div className="relative my-4">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t border-gray-200" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-gray-400">또는 이메일로 시작</span>
-              </div>
-            </div>
-
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                const email = (e.currentTarget.elements.namedItem('email') as HTMLInputElement).value;
-                if (email) useStore.getState().loginWithEmail(email);
-              }}
-              className="space-y-2"
-            >
-              <input
-                type="email"
-                name="email"
-                required
-                placeholder="name@example.com"
-                className="w-full h-14 px-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/50 bg-white"
-              />
-              <Button
-                type="submit"
-                isLoading={isLoading}
-                variant="outline"
-                className="w-full h-14 text-lg bg-white"
-              >
-                이메일로 인증 링크 받기
-              </Button>
-            </form>
-          </div>
-          <p className="text-xs text-gray-400 mt-8">
-            계속 진행함으로써 서비스 이용약관 및 개인정보 처리방침에 동의합니다.
-          </p>
-        </div>
-      </div>
-    );
+    return <LandingPage />;
   }
 
   // 2. Setup View (Onboarding)
