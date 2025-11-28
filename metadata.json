@@ -1,0 +1,7 @@
+{
+  "name": "NyangLife (Cat Lifecycle Manager)",
+  "description": "A monetization-ready, adaptive lifecycle management PWA for cats. Features age-specific dashboards, health logging, and daily to-do management.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
