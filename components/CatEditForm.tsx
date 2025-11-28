@@ -181,10 +181,19 @@ export const CatEditForm: React.FC<CatEditFormProps> = ({ onClose }) => {
                                     <input
                                         type="text"
                                         placeholder="또는 이미지 URL 직접 입력"
-                                        className="w-full text-xs text-center text-gray-600 bg-gray-50 border border-transparent hover:border-gray-200 focus:bg-white focus:border-primary/50 rounded-lg py-2 pl-8 pr-2 transition-all outline-none"
+                                        className="w-full text-xs text-center text-gray-600 bg-gray-50 border border-transparent hover:border-gray-200 focus:bg-white focus:border-primary/50 rounded-lg py-2 pl-8 pr-8 transition-all outline-none"
                                         value={formData.image_url}
                                         onChange={e => setFormData({ ...formData, image_url: e.target.value })}
                                     />
+                                    {formData.image_url && (
+                                        <button
+                                            type="button"
+                                            onClick={() => setFormData({ ...formData, image_url: '' })}
+                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                                        >
+                                            <X size={14} />
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -355,7 +364,7 @@ export const CatEditForm: React.FC<CatEditFormProps> = ({ onClose }) => {
                         </div>
                     </form>
                 </div>
-            </div>
+            </div >
 
             {showBreedSelector && (
                 <BreedSelector
@@ -367,6 +376,6 @@ export const CatEditForm: React.FC<CatEditFormProps> = ({ onClose }) => {
                     }}
                 />
             )}
-        </div>
+        </div >
     );
 };

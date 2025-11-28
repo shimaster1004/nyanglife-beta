@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useStore } from '../../store';
 import { Button } from '../ui/Button';
 import { Card } from '../ui/Card';
@@ -36,6 +36,24 @@ export const AdminView: React.FC<AdminViewProps> = ({ onExit }) => {
       thumbnail_url: '',
       video_url: ''
    });
+
+   const fileInputRef = useRef<HTMLInputElement>(null);
+
+   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (file) {
+         if (file.size > 1024 * 1024 * 5) { // 5MB limit
+            alert("이미지 크기는 5MB 이하여야 합니다.");
+            return;
+         }
+         const reader = new FileReader();
+         reader.onloadend = () => {
+            setFormData({ ...formData, thumbnail_url: reader.result as string });
+         };
+         reader.readAsDataURL(file);
+      }
+   };
+
 
    // Users State
    const [users, setUsers] = useState<any[]>([]);
@@ -253,16 +271,35 @@ export const AdminView: React.FC<AdminViewProps> = ({ onExit }) => {
                         </select>
                      </div>
                      <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-1">Thumbnail URL</label>
-                        <div className="relative">
+                        <label className="block text-sm font-bold text-gray-700 mb-1">Thumbnail Image</label>
+                        <div className="flex flex-col gap-2">
+                           <div className="relative">
+                              <input
+                                 type="text"
+                                 className="w-full p-3 pl-9 bg-gray-50 rounded-xl border border-gray-100 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                                 value={formData.thumbnail_url}
+                                 onChange={e => setFormData({ ...formData, thumbnail_url: e.target.value })}
+                                 placeholder="Image URL or Upload"
+                              />
+                              <ImageIcon size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                           </div>
                            <input
-                              type="text"
-                              className="w-full p-3 pl-9 bg-gray-50 rounded-xl border border-gray-100 focus:outline-none focus:ring-2 focus:ring-primary/50"
-                              value={formData.thumbnail_url}
-                              onChange={e => setFormData({ ...formData, thumbnail_url: e.target.value })}
-                              placeholder="https://..."
+                              type="file"
+                              ref={fileInputRef}
+                              className="hidden"
+                              accept="image/*"
+                              onChange={handleFileChange}
                            />
-                           <ImageIcon size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                           <Button
+                              type="button"
+                              variant="secondary"
+                              size="sm"
+                              onClick={() => fileInputRef.current?.click()}
+                              className="w-full bg-gray-100 text-gray-600 hover:bg-gray-200"
+                           >
+                              <ImageIcon size={14} className="mr-2" />
+                              Upload Image File
+                           </Button>
                         </div>
                      </div>
                   </div>
@@ -341,8 +378,9 @@ export const AdminView: React.FC<AdminViewProps> = ({ onExit }) => {
                   </div>
                ))}
             </div>
-         )}
-      </div>
+         )
+         }
+      </div >
    );
 
    const renderUsers = () => (

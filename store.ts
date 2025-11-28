@@ -1,7 +1,7 @@
 
 import { create } from 'zustand';
 import { Cat, HealthLog, Profile, Todo, HomeCheck, HealthTip, Appointment, Medication } from './types';
-import { generateId } from './lib/utils';
+import { generateId, getRedirectUrl } from './lib/utils';
 import { supabase } from './lib/supabase';
 
 // Initial Data for DB Seeding (Will be inserted into DB if empty)
@@ -364,7 +364,7 @@ export const useStore = create<AppState>((set, get) => ({
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: window.location.origin
+        redirectTo: getRedirectUrl()
       }
     });
     if (error) console.error(error);
@@ -375,7 +375,7 @@ export const useStore = create<AppState>((set, get) => ({
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: window.location.origin,
+        emailRedirectTo: getRedirectUrl(),
       },
     });
     if (error) {
